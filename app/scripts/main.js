@@ -13,9 +13,12 @@ var ghostDistortTime = 3000;
 var state = "idle";
 
 //---------------------------------------------------------------//
+$(function(){
+  //Setup wrapper height relative to container, to prevent info container to introduce empty space at the bottom of the container
+  $("#container-wrapper").height($("#container").outerHeight(true));
+})
 
 setupAudio();
-
 var audioLoaded = false;
 var ghostAnimationFinished = false;
 var ghostDistortStarted = false;
@@ -27,70 +30,114 @@ audio.addEventListener('loadeddata', function(){
         startDrawing(20); //brain alpha waves are 10 pulses per second. Draw double the speed to change bg every half cycle
         audio.volume = 1;
         state = "playing";
+        animationTransition = false;
       });
 
     }
 }, false);
 
-$(window).on("click", function(){
+var infoVisible = false;
+var infoAnimating = false;
+$("#info-button").on("click", function(){
+  infoAnimating = true;
 
-  if (state == "idle"){
-    audio.src = 'Atto3.mp3';
-    audio.play();
+  $("#info-section").css("background-color", "#686867");
+  $("#container > .main").css("visibility", "visible");
 
-    $(".info").animate({
-      opacity: 0
-    }, fadingTime);
-
-    $("body").animate({
-      backgroundColor: "#000"
-    }, fadingTime);
-
-    $("#ghost").css("visibility", "visible");
-    $("#ghost").animate({
-      opacity: 1
-    }, fadingTime, function(){
-      ghostAnimationFinished = true;
-      if (audioLoaded && !ghostDistortStarted){
-        ghostDistortStarted = true;
-        distortGhost(document.getElementById("ghost"), function(){
-          startDrawing(20); //brain alpha waves are 10 pulses per second. Draw double the speed to change bg every half cycle
-          state = "playing";
-
-          console.log("ghost s")
-        });
-
-      }
-      ghostAnimationFinished = true;
-    })
-  }else if (state == "playing"){
-    state = "pause";
-    audio.pause();
-
-    $(".info").animate({
-      opacity: 1
-    }, fadingTime);
-
-    $("body").css("backgroundColor", "#000");
-    $("body").animate({
-      backgroundColor: "#686867"
-    }, fadingTime);
-
-  }else if (state == "pause"){
-
-    $(".info").animate({
-      opacity: 0
-    }, fadingTime);
-
-    $("body").css("backgroundColor", "#686867");
-    $("body").animate({
-      backgroundColor: "#000"
-    }, fadingTime, function(){
-      audio.play();
-      state = "playing"
-    });
+  if (infoVisible){
+    var newHeight = "20px";
+    var newY = 0;
+  }else{
+    var newHeight = $("#container").height();
+    var newY = - $("#container").height();
   }
+  $("#info-section").transit({
+    height: newHeight,
+    y: newY
+  }, fadingTime, function(){
+    infoAnimating = false;
+    infoVisible = !infoVisible;
+    if (infoVisible){
+      $("#info-button").text("CLOSE");
+      $("#info-section").css("background-color", "rgb(0,0,0,0)");
+      $("#container > .main").css("visibility", "hidden");
+    }
+    else {
+      $("#info-button").text("INFO");
+      $("#info-section").css("background-color", "rgb(0,0,0,0)");
+    }
+  })
+});
 
+
+var animationTransition = false;
+$(document).click(function(event) {
+  if(!infoAnimating && !$(event.target).closest('#info-button').length && !animationTransition) {
+    animationTransition = true;
+    if (state == "idle"){
+      audio.src = 'Atto3.mp3';
+      audio.play();
+
+
+
+      hideInfoSection(function(){
+
+        $(".info").animate({
+          opacity: 0
+        }, fadingTime);
+
+        $("body").animate({
+          backgroundColor: "#000"
+        }, fadingTime);
+
+        $("#ghost").css("visibility", "visible");
+        $("#ghost").animate({
+          opacity: 1
+        }, fadingTime, function(){
+          ghostAnimationFinished = true;
+          if (audioLoaded && !ghostDistortStarted){
+            ghostDistortStarted = true;
+            distortGhost(document.getElementById("ghost"), function(){
+              startDrawing(20); //brain alpha waves are 10 pulses per second. Draw double the speed to change bg every half cycle
+              state = "playing";
+              animationTransition = false;
+            });
+          }
+          ghostAnimationFinished = true;
+        })
+      })
+    }else if (state == "playing"){
+      state = "pause";
+      audio.pause();
+
+      $(".info").animate({
+        opacity: 1
+      }, fadingTime);
+
+      $("body").css("backgroundColor", "#000");
+      $("body").animate({
+        backgroundColor: "#686867"
+      }, fadingTime, function(){
+        animationTransition = false;
+      });
+
+    }else if (state == "pause"){
+
+      $(".info").animate({
+        opacity: 0
+      }, fadingTime);
+
+      $("body").css("backgroundColor", "#686867");
+      $("body").animate({
+        backgroundColor: "#000"
+      }, fadingTime, function(){
+        audio.play();
+        state = "playing";
+        animationTransition = false;
+        resetInfoSection();
+      });
+    }
+  }
 })
 
 
@@ -169,8 +216,31 @@ function drawBackground(){
 }
 
 
-
 //--------- Utility functions ----------//
+function resetInfoSection(){
+  var newHeight = "20px";
+  var newY = 0;
+  $("#container > .main").css("visibility", "visible");
+  $("#info-button").text("INFO");
+  $("#info-section").css("background-color", "rgb(0,0,0,0)");
+  $("#info-section").transit({
+    height: newHeight,
+    y: newY}, 50);
+}
+
+function hideInfoSection(callback){
+  var newHeight = "20px";
+  var newY = 0;
+  $("#info-section").css("background-color", "#686867");
+  $("#container > .main").css("visibility", "visible");
+  $("#info-section").transit({
+    height: newHeight,
+    y: newY}, fadingTime, function(){
+      $("#info-button").text("INFO");
+      $("#info-section").css("background-color", "rgb(0,0,0,0)");
+      callback();
+    });
+}
 
 function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
   var w = elt.offsetWidth, h = elt.offsetHeight;

@@ -21,38 +21,67 @@
     <!-- build:js scripts/vendor/modernizr.js -->
     <script src="/bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
+
+    <script src="https://use.typekit.net/vat7znl.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+
   </head>
   <body>
     <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
-    <div id="container">
-      <div class="wrapper info" id="top">
-        <div> LUCIFER BIG BAND</div>
-        <div> ATTO 3</div>
-      </div>
-      <div class="wrapper" id="mask">
-        <div id="static" class="info">
-          <img src="images/mask-static.png">
+    <div id="container-wrapper">
+      <div id="container">
+        <div class="wrapper info main" id="top">
+          <img src="/images/logo.svg">
+          <!-- <div> LUCIFER BIG BAND</div>
+          <div> ATTO 3</div> -->
         </div>
-        <div id="ghost">
-          <img src="images/mask-ghost.png">
-          Loading
+        <div class="wrapper main" id="mask">
+          <div id="static" class="info">
+            <img src="images/mask-static.png">
+          </div>
+          <div id="ghost">
+            <img src="images/mask-ghost.png">
+            Loading
+          </div>
         </div>
-      </div>
-      <!-- <div class="wrapper" id="mask">
+        <!-- <div class="wrapper" id="mask">
 
-      </div> -->
-      <div class="wrapper info" id="bottom">
-        Turn the volume up / sit confortably in front of the screen / touch anywhere and close your eyes when the music begins
-        <br>
-        <br>
-        BEWARE: CONTAINS FLASHING LIGHTS
+        </div> -->
+        <div class="wrapper info main" id="bottom">
+          <p>
+          Turn the volume up / sit confortably in front of the screen / touch anywhere and close your eyes when the music begins</p>
+          <p>
+          BEWARE: CONTAINS FLASHING LIGHTS
+        </p>
+        </div>
+
+        <div class="wrapper info" id="info-section">
+          <div>
+            <button id="info-button">
+            INFO
+            </button>
+        </div>
+          <p>
+            “A Dreamachine is “viewed” with the eyes closed: the pulsating light stimulates the optic nerve and thus alters the brain’s electrical oscillations. Users experience increasingly bright, complex patterns of color behind their closed eyelids. The patterns become shapes and symbols, swirling around, until the user feels surrounded by colors. It is claimed that by using a Dreamachine one may enter a hypnagogic state.”
+          </p>
+
+          <p>
+            Lucifer Big Band - Atto III is released in CD-r with handmade packaging by Bloody Sound Fucktory. Get a copy <a href="http://www.bloodysoundfucktory.com/it/lucifer-big-band/atto-iii"> here</a>.
+          </p>
+
+          <p>
+            Design & Development by <a target="blank" href="http://orgonomyproductions.info/">Leonardo Amico</a>
+          </p>
+
+        </div>
+
       </div>
     </div>
 
-    <canvas id="analyser"></canvas>
+
+      <canvas id="analyser"></canvas>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
@@ -68,7 +97,7 @@
     <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/perspective-transform/dist/perspective-transform.js"></script>
-
+    <script src="/bower_components/jquery.transit/jquery.transit.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

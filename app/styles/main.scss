@@ -1,3 +1,6 @@
+$font-size: 14px;
+$bg-color: #686867;
+$fg-color: #000;
 
 /* Space out content a bit */
 html, body {
@@ -6,18 +9,45 @@ html, body {
   height: 100vh;
   padding: 0;
   margin: 0;
-  background-color: #686867;
+  background-color: $bg-color;
+
+  font-size: $font-size;
+
+  font-family: baskerville-urw-wide, serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+
 }
 
+// body{
+//   overflow: hidden;
+// }
+
+a, a:visited, a:active{
+  color: $fg-color;
+}
+a:hover {
+
+}
+
+#container-wrapper{
+  overflow: hidden;
+}
 
 #container {
-    position:relative;
+
+    // position:absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+
     width: 100vw;
     text-align: center;
     overflow: clip;
     margin: auto;
-    padding: 20px;
-    padding-top: 100px;
+    padding-top: 50px;
+    padding-bottom: 50px;
 
     .wrapper {
       margin-top: 20px;
@@ -26,6 +56,12 @@ html, body {
 @media screen and (min-width: 400px) {
   #container {
     max-width: 400px;
+  }
+}
+
+#top{
+  img {
+    width: 100px;
   }
 }
 
@@ -52,4 +88,26 @@ html, body {
 #bottom {
   width: 50%;
   margin: auto;
+}
+
+#info-section {
+  height: 20px;
+  width: 50%;
+  margin: auto;
+  overflow: hidden;
+
+  #info-button, #info-button:focus, #info-button:active{
+    text-decoration: underline;
+    background-color: rgba(0,0,0,0);
+    border: none;
+    cursor: crosshair;
+    font-size: $font-size;
+    outline: none;
+  }
+}
+
+#analyser {
+  position: fixed;
+  top: 10;
+  left: 10;
 }
