@@ -78,34 +78,13 @@ $(document).click(function(event) {
       audio.src = 'Atto3.mp3';
       audio.play();
 
+      if (infoVisible){
+        hideInfoSection(idleToPlay);
+      }else{
+        idleToPlay()
+      }
 
 
-      hideInfoSection(function(){
-
-        $(".info").animate({
-          opacity: 0
-        }, fadingTime);
-
-        $("body").animate({
-          backgroundColor: "#000"
-        }, fadingTime);
-
-        $("#ghost").css("visibility", "visible");
-        $("#ghost").animate({
-          opacity: 1
-        }, fadingTime, function(){
-          ghostAnimationFinished = true;
-          if (audioLoaded && !ghostDistortStarted){
-            ghostDistortStarted = true;
-            distortGhost(document.getElementById("ghost"), function(){
-              startDrawing(20); //brain alpha waves are 10 pulses per second. Draw double the speed to change bg every half cycle
-              state = "playing";
-              animationTransition = false;
-            });
-          }
-          ghostAnimationFinished = true;
-        })
-      })
     }else if (state == "playing"){
       state = "pause";
       audio.pause();
@@ -220,6 +199,7 @@ function drawBackground(){
 function resetInfoSection(){
   var newHeight = "20px";
   var newY = 0;
+  infoVisible = false;
   $("#container > .main").css("visibility", "visible");
   $("#info-button").text("INFO");
   $("#info-section").css("background-color", "rgb(0,0,0,0)");
@@ -229,6 +209,7 @@ function resetInfoSection(){
 }
 
 function hideInfoSection(callback){
+  infoAnimating = true;
   var newHeight = "20px";
   var newY = 0;
   $("#info-section").css("background-color", "#686867");
@@ -236,11 +217,40 @@ function hideInfoSection(callback){
   $("#info-section").transit({
     height: newHeight,
     y: newY}, fadingTime, function(){
+      infoAnimating = false;
+      infoVisible = !infoVisible;
       $("#info-button").text("INFO");
       $("#info-section").css("background-color", "rgb(0,0,0,0)");
       callback();
     });
 }
+
+function idleToPlay(){
+  $(".info").animate({
+    opacity: 0
+  }, fadingTime);
+
+  $("body").animate({
+    backgroundColor: "#000"
+  }, fadingTime);
+
+  $("#ghost").css("visibility", "visible");
+  $("#ghost").animate({
+    opacity: 1
+  }, fadingTime, function(){
+    ghostAnimationFinished = true;
+    if (audioLoaded && !ghostDistortStarted){
+      ghostDistortStarted = true;
+      distortGhost(document.getElementById("ghost"), function(){
+        startDrawing(20); //brain alpha waves are 10 pulses per second. Draw double the speed to change bg every half cycle
+        state = "playing";
+        animationTransition = false;
+      });
+    }
+    ghostAnimationFinished = true;
+  })
+}
+
 
 function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
   var w = elt.offsetWidth, h = elt.offsetHeight;
