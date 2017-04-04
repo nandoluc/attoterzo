@@ -27,6 +27,31 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
+    <div id="container">
+      <div class="wrapper info" id="top">
+        <div> LUCIFER BIG BAND</div>
+        <div> ATTO 3</div>
+      </div>
+      <div class="wrapper" id="mask">
+        <div id="static" class="info">
+          <img src="images/mask-static.png">
+        </div>
+        <div id="ghost">
+          <img src="images/mask-ghost.png">
+          Loading
+        </div>
+      </div>
+      <!-- <div class="wrapper" id="mask">
+
+      </div> -->
+      <div class="wrapper info" id="bottom">
+        Turn the volume up / sit confortably in front of the screen / touch anywhere and close your eyes when the music begins
+        <br>
+        <br>
+        BEWARE: CONTAINS FLASHING LIGHTS
+      </div>
+    </div>
+
     <canvas id="analyser"></canvas>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -42,6 +67,8 @@
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/perspective-transform/dist/perspective-transform.js"></script>
+
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -61,6 +88,7 @@
     <!-- endbuild -->
 
     <!-- build:js scripts/main.js -->
+    <script src="scripts/jquery-ui.min.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
   </body>

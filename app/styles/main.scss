@@ -6,4 +6,50 @@ html, body {
   height: 100vh;
   padding: 0;
   margin: 0;
+  background-color: #686867;
+}
+
+
+#container {
+    position:relative;
+    width: 100vw;
+    text-align: center;
+    overflow: clip;
+    margin: auto;
+    padding: 20px;
+    padding-top: 100px;
+
+    .wrapper {
+      margin-top: 20px;
+    }
+}
+@media screen and (min-width: 400px) {
+  #container {
+    max-width: 400px;
+  }
+}
+
+#mask {
+  position: relative;
+  width: 50%;
+  margin: auto;
+  // background-color: yellow;
+
+  img {
+    width: 100%;
+  }
+  #ghost{
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    // background-color: yellow;
+
+  }
+}
+
+#bottom {
+  width: 50%;
+  margin: auto;
 }

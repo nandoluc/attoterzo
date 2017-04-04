@@ -1,41 +1,123 @@
+// var debug = true;
+var debug = false;
+
 var minRMS = 0;
 var maxRMS = 256;
 
 var minFrequency = 3;
 var maxFrequency = 25;
 
-// var debug = true;
-var debug = false;
+var fadingTime = 1500;
+var ghostDistortTime = 3000;
 
+var state = "idle";
 
-//
-var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+//---------------------------------------------------------------//
 
-var audio = new Audio();
-audio.crossOrigin = "anonymous";
-var source = audioCtx.createMediaElementSource(audio);
+setupAudio();
+
+var audioLoaded = false;
+var ghostAnimationFinished = false;
+var ghostDistortStarted = false;
 audio.addEventListener('loadeddata', function(){
-    console.log("Loaded");
-    startDrawing(20); //brain alpha waves are 10 pulses per second. Draw double the speed to change bg every half cycle
+    audioLoaded = true;
+    if (ghostAnimationFinished && !ghostDistortStarted){
+      ghostDistortStarted = true;
+      distortGhost(document.getElementById("ghost"), function(){
+        startDrawing(20); //brain alpha waves are 10 pulses per second. Draw double the speed to change bg every half cycle
+        audio.volume = 1;
+        state = "playing";
+      });
+
+    }
 }, false);
 
 $(window).on("click", function(){
-  console.log("Click")
-  audio.src = 'Atto3.mp3';
-  audio.play();
+
+  if (state == "idle"){
+    audio.src = 'Atto3.mp3';
+    audio.play();
+
+    $(".info").animate({
+      opacity: 0
+    }, fadingTime);
+
+    $("body").animate({
+      backgroundColor: "#000"
+    }, fadingTime);
+
+    $("#ghost").css("visibility", "visible");
+    $("#ghost").animate({
+      opacity: 1
+    }, fadingTime, function(){
+      ghostAnimationFinished = true;
+      if (audioLoaded && !ghostDistortStarted){
+        ghostDistortStarted = true;
+        distortGhost(document.getElementById("ghost"), function(){
+          startDrawing(20); //brain alpha waves are 10 pulses per second. Draw double the speed to change bg every half cycle
+          state = "playing";
+
+          console.log("ghost s")
+        });
+
+      }
+      ghostAnimationFinished = true;
+    })
+  }else if (state == "playing"){
+    state = "pause";
+    audio.pause();
+
+    $(".info").animate({
+      opacity: 1
+    }, fadingTime);
+
+    $("body").css("backgroundColor", "#000");
+    $("body").animate({
+      backgroundColor: "#686867"
+    }, fadingTime);
+
+  }else if (state == "pause"){
+
+    $(".info").animate({
+      opacity: 0
+    }, fadingTime);
+
+    $("body").css("backgroundColor", "#686867");
+    $("body").animate({
+      backgroundColor: "#000"
+    }, fadingTime, function(){
+      audio.play();
+      state = "playing"
+    });
+  }
 
 })
 
-var analyser = audioCtx.createAnalyser();
-analyser.fftSize = 256;
 
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
+//--------- Audio ----------//
+var audioCtx, audio, source, analyser, dataArray;
+function setupAudio(){
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-var bufferLength = analyser.frequencyBinCount;
-var dataArray = new Uint8Array(bufferLength);
-for (var i=0; i<analyser.frequencyBinCount; i++){
-  dataArray[i] = 0;
+  audio = new Audio();
+  audio.crossOrigin = "anonymous";
+  source = audioCtx.createMediaElementSource(audio);
+
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+}
+function getFrequencyData(){
+  analyser.getByteFrequencyData(dataArray);
+  var rms = 0;
+  for (var i=minFrequency; i<maxFrequency; i++){
+    rms+= dataArray[i];
+  }
+  return rms/(maxFrequency - minFrequency)
 }
 
 var fps, fpsInterval, startTime, now, then, elapsed;
@@ -47,10 +129,12 @@ function startDrawing(fps) {
     draw();
 }
 
-var colorState = false;
-
+//--------- Drawing ----------//
 function draw() {
+
   requestAnimationFrame(draw);
+
+  if (state == "pause") return;
 
   if (debug) drawSpectrum();
 
@@ -63,16 +147,7 @@ function draw() {
   }
 }
 
-
-function getFrequencyData(){
-  analyser.getByteFrequencyData(dataArray);
-  var rms = 0;
-  for (var i=minFrequency; i<maxFrequency; i++){
-    rms+= dataArray[i];
-  }
-  return rms/(maxFrequency - minFrequency)
-}
-
+var colorState = false;
 function drawBackground(){
    var rms = getFrequencyData();
    var rmsScaled = Math.min(Math.max(rms, minRMS), maxRMS);
@@ -93,7 +168,55 @@ function drawBackground(){
 
 }
 
-// Utility - Spectrometer
+
+
+//--------- Utility functions ----------//
+
+function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
+  var w = elt.offsetWidth, h = elt.offsetHeight;
+  var transform = PerspT([0, 0, w, 0, 0, h, w, h], [x1, y1, x2, y2, x3, y3, x4, y4]);
+  var t = transform.coeffs;
+  t = [t[0], t[3], 0, t[6],
+       t[1], t[4], 0, t[7],
+       0   , 0   , 1, 0   ,
+       t[2], t[5], 0, t[8]];
+  t = "matrix3d(" + t.join(", ") + ")";
+  // elt.style["-webkit-transform"] = t;
+  // elt.style["-moz-transform"] = t;
+  // elt.style["-o-transform"] = t;
+  elt.style.transform = t;
+}
+var distortGhostCallbackCalled;
+function distortGhost(el, callback){
+  var corners;
+  distortGhostCallbackCalled = false;
+  corners = [0, 0, $(el).width(), 0, 0, $(el).height(), $(el).width(), $(el).height()];
+  $({ i:0 }).animate({ i: 1}, {
+      duration: ghostDistortTime,
+      step: function(i, fi) {
+
+          $(el).css("opacity", (1 - i))
+
+          var xTransformFactor = 1.3;
+          var yTransformFactor = 1.01;
+          corners[0]+=xTransformFactor*i;
+          corners[2]+=xTransformFactor*i;
+          // corners[3]-=yTransformFactor*i;
+
+          transform2d(el, corners[0], corners[1], corners[2], corners[3],
+                           corners[4], corners[5], corners[6], corners[7]);
+
+          if (i > 0.9 && !distortGhostCallbackCalled) {
+            callback();
+            distortGhostCallbackCalled =  true;
+          }
+
+      },
+
+  });
+}
+
+//--------- Utility - Spectrometer ----------//
 var canvas, canvasCtx;
 function createCanvas() {
     canvas = document.getElementById('analyser');
