@@ -14,15 +14,25 @@
 
 <!-- - Facebook, Twitter sharing tags
 - Favicon  -->
+
+<!-- - matatags
+  - add final url
+  - add immage
+  - Add analytics  -->
+
+
+- Don't start animation when clicking on link
 - Add domain to typekit
-- Use transit for all animations (?!)
+  - http://attoterzo.bloodysoundfucktory.com/
+- Full screen animation
 - Color highlight
-- Cannot highlight text because of clicking everywhere
+  - Cannot highlight text because of clicking everywhere
 
 
-### W/ NANDO
-- Google Analytics
-- Buy domain
+- Testo
+  - Pick from gysin 
+- Caratteri strani
+
 
 ### EXTRA
 - Frequency affects color (but keep hi-brightness)
