@@ -20,17 +20,16 @@
   - add immage
   - Add analytics  -->
 
-
+<!-- - Full screen animation -->
 - Don't start animation when clicking on link
 - Add domain to typekit
   - http://attoterzo.bloodysoundfucktory.com/
-- Full screen animation
 - Color highlight
   - Cannot highlight text because of clicking everywhere
 
 
 - Testo
-  - Pick from gysin 
+  - Pick from gysin
 - Caratteri strani
 
 
