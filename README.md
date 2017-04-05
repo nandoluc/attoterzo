@@ -28,10 +28,10 @@
   - Cannot highlight text because of clicking everywhere -->
 - Custom domain
   - https://help.github.com/articles/adding-or-removing-a-custom-domain-for-your-github-pages-site/
-
+<!-- 
 - Testo
   - Pick from gysin
-- Caratteri strani
+- Caratteri strani -->
 
 
 ### EXTRA
