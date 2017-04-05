@@ -12,9 +12,13 @@
 <!-- - Text appears after the mask when pausing
 - Text disappears before the mask at the beginning   -->
 
-- Use transit for all animations (?!)
-- Facebook, Twitter sharing tags
+<!-- - Facebook, Twitter sharing tags
+- Favicon  -->
 - Add domain to typekit
+- Use transit for all animations (?!)
+- Color highlight
+- Cannot highlight text because of clicking everywhere
+
 
 ### W/ NANDO
 - Google Analytics
