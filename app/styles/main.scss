@@ -25,8 +25,9 @@ html, body {
 a, a:visited, a:active{
   color: $fg-color;
 }
-a:hover {
 
+::selection {
+  background: #bbbbbb;
 }
 
 #container-wrapper{

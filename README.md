@@ -21,12 +21,13 @@
   - Add analytics  -->
 
 <!-- - Full screen animation -->
-- Don't start animation when clicking on link
-- Add domain to typekit
-  - http://attoterzo.bloodysoundfucktory.com/
-- Color highlight
-  - Cannot highlight text because of clicking everywhere
-
+<!-- - Don't start animation when clicking on link -->
+<!-- - Add domain to typekit
+  - http://attoterzo.bloodysoundfucktory.com/ -->
+<!-- - Color highlight
+  - Cannot highlight text because of clicking everywhere -->
+- Custom domain
+  - https://help.github.com/articles/adding-or-removing-a-custom-domain-for-your-github-pages-site/
 
 - Testo
   - Pick from gysin

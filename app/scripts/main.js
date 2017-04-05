@@ -76,7 +76,7 @@ $("#info-button").on("click", function(){
 
 var animationTransition = false;
 $(document).click(function(event) {
-  if(!infoAnimating && !$(event.target).closest('#info-button').length && !animationTransition) {
+  if(!infoAnimating && !$(event.target).closest('#info-button').length && !$(event.target).closest('a').length && !animationTransition) {
     animationTransition = true;
     if (state == "idle"){
       audio.src = 'Atto3.mp3';
