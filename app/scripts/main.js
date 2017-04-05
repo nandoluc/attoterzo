@@ -10,14 +10,16 @@ var maxFrequency = 25;
 var fadingTime = 1500;
 var ghostDistortTime = 3000;
 
-var state = "idle";
+var state = 'idle';
 
 //---------------------------------------------------------------//
 $(function(){
-  //Setup wrapper height relative to container, to prevent info container to introduce empty space at the bottom of the container
-  $("#container-wrapper").height($("#container").outerHeight(true));
 
   startIdle();
+})
+$(window).on("load", function(){
+  //Setup wrapper height relative to container, to prevent info container to introduce empty space at the bottom of the container
+  $('#container-wrapper').height($('#container').outerHeight(true));
 })
 
 setupAudio();
