@@ -16,6 +16,8 @@ var state = "idle";
 $(function(){
   //Setup wrapper height relative to container, to prevent info container to introduce empty space at the bottom of the container
   $("#container-wrapper").height($("#container").outerHeight(true));
+
+  startIdle();
 })
 
 setupAudio();
@@ -83,38 +85,10 @@ $(document).click(function(event) {
       }else{
         idleToPlay()
       }
-
-
     }else if (state == "playing"){
-      state = "pause";
-      audio.pause();
-
-      $(".info").animate({
-        opacity: 1
-      }, fadingTime);
-
-      $("body").css("backgroundColor", "#000");
-      $("body").animate({
-        backgroundColor: "#686867"
-      }, fadingTime, function(){
-        animationTransition = false;
-      });
-
+      playToPause();
     }else if (state == "pause"){
-
-      $(".info").animate({
-        opacity: 0
-      }, fadingTime);
-
-      $("body").css("backgroundColor", "#686867");
-      $("body").animate({
-        backgroundColor: "#000"
-      }, fadingTime, function(){
-        audio.play();
-        state = "playing";
-        animationTransition = false;
-        resetInfoSection();
-      });
+      pauseToPlay();
     }
   }
 })
@@ -225,8 +199,23 @@ function hideInfoSection(callback){
     });
 }
 
+function startIdle(){
+  animationTransition = true;
+  $(".info").delay(1000).animate({
+    opacity: 1
+  }, fadingTime, function(){
+    animationTransition = false;
+  });
+  $("#mask > #static").animate({
+    opacity: 1
+  }, fadingTime);
+}
+
 function idleToPlay(){
   $(".info").animate({
+    opacity: 0
+  }, fadingTime);
+  $("#mask > #static").delay(500).animate({
     opacity: 0
   }, fadingTime);
 
@@ -251,6 +240,44 @@ function idleToPlay(){
   })
 }
 
+function playToPause(){
+  state = "pause";
+  audio.pause();
+
+  $(".info").delay(500).animate({
+    opacity: 1
+  }, fadingTime);
+
+  $("#mask > #static").animate({
+    opacity: 1
+  }, fadingTime);
+
+  $("body").css("backgroundColor", "#000");
+  $("body").animate({
+    backgroundColor: "#686867"
+  }, fadingTime, function(){
+    animationTransition = false;
+  });
+}
+
+function pauseToPlay(){
+  $(".info").animate({
+    opacity: 0
+  }, fadingTime);
+  $("#mask > #static").delay(500).animate({
+    opacity: 0
+  }, fadingTime, function(){
+    audio.play();
+    state = "playing";
+    animationTransition = false;
+    resetInfoSection();
+  });
+
+  $("body").css("backgroundColor", "#686867");
+  $("body").animate({
+    backgroundColor: "#000"
+  }, fadingTime);
+}
 
 function transform2d(elt, x1, y1, x2, y2, x3, y3, x4, y4) {
   var w = elt.offsetWidth, h = elt.offsetHeight;

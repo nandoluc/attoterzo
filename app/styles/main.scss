@@ -59,9 +59,13 @@ a:hover {
   }
 }
 
+.info {
+  opacity: 0;
+}
+
 #top{
   img {
-    width: 100px;
+    width: 120px;
   }
 }
 
@@ -74,6 +78,9 @@ a:hover {
   img {
     width: 100%;
   }
+  #static {
+    opacity: 0;
+  }
   #ghost{
     position: absolute;
     top: 0;
@@ -81,13 +88,21 @@ a:hover {
     visibility: hidden;
     opacity: 0;
     // background-color: yellow;
-
+    #loading {
+      font-size: 15px;
+      color: #64b984;
+    }
   }
 }
 
 #bottom {
   width: 50%;
   margin: auto;
+
+  #beware {
+    font-weight: 600;
+    border: 2px solid black;
+  }
 }
 
 #info-section {
