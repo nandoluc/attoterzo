@@ -1,5 +1,11 @@
 # Atto Terzo
 
+## RUN
+  - nvm use (set node version at 7.2.0)
+  - npm install
+  - bower install
+  - gulp serve
+
 ## TODO
 
 <!-- - Logo, typeface
